@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            background-color: rgb(255, 255, 255);
+            padding-top: 50px;
+        }
+        .card{
+            border: 1px solid black;
+            width: 20%;
+            height: 450px;
+            text-align: center;
+            background-color: rgb(218, 219, 238);
+        }
+        img{
+            width: 80%;
+        }
+
+        .nav{
+            background-color: rgb(7, 7, 12);
+            min-height: 80px;
+            color: gold;
+            text-align: center;
+            padding-top: 20px;
+        }
+        button{
+            background-color: rgb(8, 8, 8);
+            color: white;
+        }
+        .checkout{
+            width: 100%;
+            background-color: rgb(0, 0, 0);
+            text-align: center;
+            font-size: 30px;
+            padding-top: 30px;
+        }
+        .checkout button{
+            font-size: 30px;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- <h1>hello products</h1> -->
+     <div class="nav"><h1>GLOBAL STORE</h1></div>
+    <div class="container">
+        
+        
+        <!-- <div class="card">
+            <img src="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png" alt="">
+            <h1>title</h1>
+            <h1>desccription</h1>
+            <h1>price</h1>
+        </div> -->
+        
+    </div>
+    <div class="checkout"><button onclick="checkout()">checkout</button></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        
+
+        var data ;
+        var div = document.querySelector(".container")
+        fetch("https://dummyjson.com/products")
+        .then((res)=>res.json())
+        .then((res)=>{
+            console.log(res.products);
+            data = res.products;
+            res.products.map((item, index)=>{
+                div.innerHTML += `<div class="card">
+                <img src=${item.thumbnail} alt="">
+            <h1>${item.title}</h1>
+            <p>${item.description.slice(0, 20)}...</p>
+            <p>price $ ${item.price}</p>
+            <button onclick="showmore(${item.id})">see more</button>
+            <button onclick="addToCart(${index})">add to cart</button>
+            </div>
+                `
+            })
+            
+        })
+        const showmore = (id)=>{
+            console.log(id);
+            localStorage.setItem("id", id)
+            window.location = "singleproduct.html"
+            
+        }
+        var cartitem = [];
+        // function addToCart(index){
+        //     console.log(index);
+        //     cartitem.push(index)
+        //     console.log(cartitem);
+            
+        // }
+
+
+        function addToCart(index){
+            const checkIndex = cartitem.indexOf(data[index]);
+            if (checkIndex === -1) {
+                data[index].quantity = 1;
+                cartitem.push(data[index])
+
+            } else {
+                data[index].quantity += 1;
+            }
+            console.log(cartitem);
+
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Item added to cart successfully!",
+                    icon: "success",
+                });
+         
+            
+        }
+
+
+        function checkout(){
+            const convertArrToStr = JSON.stringify(cartitem);
+            localStorage.setItem("cart", convertArrToStr);
+            window.location = "cart.html"
+        }
+
+
+
+
+
+
+
+        // const checkDataFroLocalStorage = JSON.parse(localStorage.getItem("cart"))
+        //     if(checkDataFroLocalStorage === null){
+        //         cartitems = []
+        //     } else {
+        //         cartitems = [...checkDataFroLocalStorage]
+        //     }
+        //     console.log("cartitems===>", cartitems);
+
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            background-color: rgb(10, 1, 61);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 620px;
+        }
+        .card{
+            border: 1px solid black;
+            background-color: rgb(5, 79, 251);
+            width: 50%;
+            height: 600px;
+            color: rgb(0, 0, 0);
+            text-align: center;
+        }
+        img{
+            /* width: 80%; */
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="card">
+            <!-- <h1>hello</h1> -->
+             
+        </div>
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    <script>
+        var div = document.querySelector(".card")
+        var singleproduct = localStorage.getItem("id")
+        console.log(singleproduct);
+        fetch(`https://dummyjson.com/products/${singleproduct}`)
+        .then((res)=>res.json())
+        .then((res)=>{
+            console.log(res);
+            div.innerHTML += `
+            <img src=${res.thumbnail} alt="">
+            <h1>${res.title}</h1>
+             <h3>Category: ${res.category}</h3>
+             <p>${res.description}</p>
+            
+             <h1>availablity status:  ${res.availabilityStatus}</h1>
+             <h1>price $ ${res.price}</h1>
+             
+            ` 
+        })
+        // function addcart(){
+        //     Swal.fire({
+        //             title: "Good job!",
+        //             text: "Item added to cart successfully!",
+        //             icon: "success",
+        //         });
+        //  }
+    </script>
+</body>
+</html>
